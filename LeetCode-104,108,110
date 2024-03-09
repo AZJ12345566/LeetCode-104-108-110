@@ -1,0 +1,70 @@
+class Solution {
+/*
+104.二叉树的最大深度
+给定一个二叉树 root ，返回其最大深度。
+二叉树的 最大深度 是指从根节点到最远叶子节点的最长路径上的节点数。
+*/
+  public int maxDepth(TreeNode root) {
+    if(root == null) {
+      return 0;
+    }
+    return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+  }
+/*
+108.将有序数组转换为二叉搜索树
+给你一个整数数组 nums ，其中元素已经按 升序 排列，请你将其转换为一棵 
+平衡二叉搜索树。
+*/
+  public TreeNode sortedArrayToBST(int[] nums) {
+    return check(nums, 0, nums.length - 1);
+  }
+  public TreeNode check(int[] nums, int left, int right) {
+    if(left > right) {
+      return null;
+    }
+    int mid = (right + left) / 2;
+    TreeNode node = new TreeNode(nums[mid]);
+    node.left = check(nums, left, mid - 1);
+    node.right = check(nums, mid + 1, right);
+    return node;
+  }
+/*
+110.平衡二叉树
+给定一个二叉树，判断它是否是 平衡二叉树
+*/
+  public boolean isBalanced1(TreeNode root) {
+    if(root == null) {
+      return true;
+    }
+    return Math.abs(check(root.left) - check(root.right)) <= 1 && isBalanced(root.left) && isBalanced(root.right);
+  }
+  public int check(TreeNode root) {
+    if(root == null) {
+      return 0;
+    }
+    return Math.max(check(root.right), check(root.left)) + 1;
+  }
+//这种算法效率太低了，我们可以从低向上遍历
+  class Solution {
+    public boolean isBalanced2(TreeNode root) {
+        return height(root) >= 0;
+    }
+
+    public int height(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int leftHeight = height(root.left);
+        int rightHeight = height(root.right);
+        if (leftHeight == -1 || rightHeight == -1 || Math.abs(leftHeight - rightHeight) > 1) {
+            return -1;
+        } else {
+            return Math.max(leftHeight, rightHeight) + 1;
+        }
+    }
+}
+//作者：力扣官方题解
+//链接：https://leetcode.cn/problems/balanced-binary-tree/solutions/377216/ping-heng-er-cha-shu-by-leetcode-solution/
+//来源：力扣（LeetCode）
+//著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+}
